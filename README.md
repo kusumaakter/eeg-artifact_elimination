@@ -21,11 +21,11 @@ eeg-artifact_elimination/
 ├── step2_segmentation.m              # Window segmentation (2s, 50% overlap)
 ├── step3_advanced_features.m         # Feature extraction (21 features)
 ├── step4_classical_ml.m              # SVM, RF, KNN classification
-├── step5_tuned_ml_models.m           # Hyperparameter tuning
-├── step6_ensemble_classifier.m       # Ensemble voting
-├── step7_csp_svm_pipeline.m          # CSP + SVM for motor imagery
-├── step8_cnn_lstm_model.m            # Deep Learning (CNN-LSTM)
-├── step9_trial_segmentation.m        # Trial segmentation for CNN
+├── helper_dl_functions.m             # DL utility + metrics functions
+├── step5_cnn_model.m                 # CNN model (augmentation + metrics)
+├── step6_lstm_model.m                # BiLSTM temporal model
+├── step7_autoencoder_model.m         # Autoencoder + DNN model
+├── step8_deep_comparison.m           # DL vs classical comparison
 └── README.md                         # This file
 ```
 
@@ -69,52 +69,43 @@ step4_classical_ml.m
 % Methods: SVM, RF (100 trees), KNN (k=5)
 ```
 
-### **STEP 5: Hyperparameter Tuning**
-Optimize SVM, RF, KNN parameters for better accuracy
+### **STEP 5: CNN Model**
+Convolutional neural network for EEG artifact classification
 
 ```matlab
-step5_tuned_ml_models.m
-% Input: advanced_features.mat
-% Output: Tuned model accuracies
-% Tuning: SVM Box Constraint, RF trees, KNN neighbors
+step5_cnn_model.m
+% Input: features_extracted.mat
+% Output: step5_cnn_results.mat
+% Includes: data augmentation, training history, confusion matrix, ROC
 ```
 
-### **STEP 6: Ensemble Classifier**
-Combine SVM + RF + KNN using majority voting
+### **STEP 6: BiLSTM Model**
+Bidirectional LSTM for temporal dependency learning
 
 ```matlab
-step6_ensemble_classifier.m
-% Input: advanced_features.mat
-% Output: Ensemble accuracy (usually highest)
+step6_lstm_model.m
+% Input: features_extracted.mat
+% Output: step6_lstm_results.mat
+% Includes: performance comparison with CNN
 ```
 
-### **STEP 7: CSP + SVM Pipeline**
-Common Spatial Pattern for motor imagery classification
+### **STEP 7: Autoencoder + DNN**
+Unsupervised feature learning with encoder-decoder and DNN classifier
 
 ```matlab
-step7_csp_svm_pipeline.m
-% Input: eeg_trials.mat (trials_left, trials_right)
-% Output: CSP-SVM accuracy
-% Best for motor imagery tasks
+step7_autoencoder_model.m
+% Input: features_extracted.mat
+% Output: step7_autoencoder_results.mat
+% Includes: reconstruction loss visualization
 ```
 
-### **STEP 8: Deep Learning (CNN-LSTM)**
-Convolutional Neural Network + LSTM for deep learning classification
+### **STEP 8: Deep Model Comparison**
+Comprehensive training + comparison of DL models and classical ML
 
 ```matlab
-step8_cnn_lstm_model.m
-% Input: eeg_trials.mat
-% Output: CNN-LSTM accuracy
-% Architecture: Conv1D → LSTM → LSTM → FC
-```
-
-### **STEP 9: Trial Segmentation**
-Prepare data for CNN (create 3D trial tensor)
-
-```matlab
-step9_trial_segmentation.m
-% Input: EEG_raw_clean_noise.mat
-% Output: eeg_trials.mat (3D tensor format)
+step8_deep_comparison.m
+% Input: features_extracted.mat
+% Output: step8_deep_comparison_results.mat + CSV + plots
 ```
 
 ## Feature Engineering (21 Features)
@@ -160,10 +151,10 @@ step1_bandpass_filter.m
 step2_segmentation.m
 step3_advanced_features.m
 step4_classical_ml.m
-step5_tuned_ml_models.m
-step6_ensemble_classifier.m
-step7_csp_svm_pipeline.m
-step8_cnn_lstm_model.m
+step5_cnn_model.m
+step6_lstm_model.m
+step7_autoencoder_model.m
+step8_deep_comparison.m
 ```
 
 ## Dataset Format
