@@ -175,16 +175,19 @@ end
 function [XAug, YAug] = dl_augment_features(X, Y, noiseStd, copies)
 if nargin < 3 || isempty(noiseStd), noiseStd = 0.02; end
 if nargin < 4 || isempty(copies), copies = 1; end
-scaleJitterStd = 0.02;
+scaleJitterFactor = 0.02;
 
-XAug = X;
-YAug = Y;
+nRows = size(X,1);
+XAug = zeros((copies + 1) * nRows, size(X,2));
+YAug = repmat(Y, copies + 1, 1);
+XAug(1:nRows, :) = X;
+
 for i = 1:copies
-    scale = 1 + scaleJitterStd * randn(size(X,1), 1);
+    rowIdx = i * nRows + (1:nRows);
+    scale = 1 + scaleJitterFactor * randn(nRows, 1);
     jitter = noiseStd * randn(size(X));
     XNew = X .* scale + jitter;
-    XAug = [XAug; XNew]; %#ok<AGROW>
-    YAug = [YAug; Y]; %#ok<AGROW>
+    XAug(rowIdx, :) = XNew;
 end
 end
 
