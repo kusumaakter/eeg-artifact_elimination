@@ -8,6 +8,7 @@ fprintf('║    STEP 8: COMPREHENSIVE DL MODEL COMPARISON    ║\n');
 fprintf('╚══════════════════════════════════════════════════╝\n\n');
 
 inputFile = 'features_extracted.mat';
+[cnnName, lstmName, aeName] = deal('CNN', 'BiLSTM', 'Autoencoder+DNN');
 [X, Y] = helper_dl_functions('load_features', inputFile);
 [XTrain, YTrain, XVal, YVal, XTest, YTest] = helper_dl_functions('split_data', X, Y, 0.15, 0.20, 42);
 [XTrain, XVal, XTest] = helper_dl_functions('standardize', XTrain, XVal, XTest);
@@ -28,7 +29,7 @@ aeData = load('step7_autoencoder_results.mat');
 
 classicalAcc = helper_dl_functions('train_classical', XTrain, YTrain, XTest, YTest);
 
-modelNames = [{'CNN'; 'BiLSTM'; 'Autoencoder+DNN'}; cellstr(classicalAcc.Model)];
+modelNames = [{cnnName; lstmName; aeName}; cellstr(classicalAcc.Model)];
 accuracy = [100*cnnData.results.metrics.accuracy; ...
             100*lstmData.results.metrics.accuracy; ...
             100*aeData.results.metrics.accuracy; ...
@@ -61,7 +62,7 @@ ylabel('Accuracy (%)'); title('Model Accuracy Comparison'); grid on;
 xtickangle(25);
 
 subplot(1,2,2);
-dlRows = ismember(comparisonTable.Model, {'CNN','BiLSTM','Autoencoder+DNN'});
+dlRows = ismember(comparisonTable.Model, {cnnName, lstmName, aeName});
 bar(categorical(comparisonTable.Model(dlRows)), comparisonTable.F1Score(dlRows), 'FaceColor', [0.8 0.4 0.3]);
 ylabel('F1-Score'); title('Deep Learning F1 Comparison'); grid on;
 xtickangle(25);

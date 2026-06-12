@@ -165,6 +165,7 @@ end
 function [XTrainN, XValN, XTestN, mu, sigma] = dl_standardize(XTrain, XVal, XTest)
 mu = mean(XTrain, 1);
 sigma = std(XTrain, 0, 1);
+% Keep constant features numerically stable during normalization.
 sigma(sigma < eps) = 1;
 
 XTrainN = (XTrain - mu) ./ sigma;
@@ -303,6 +304,7 @@ saveas(gcf, [savePrefix '_confusion_roc.png']);
 end
 
 function resultTable = dl_train_classical_models(XTrain, YTrain, XTest, YTest)
+% Assumes XTrain/XTest are already standardized by caller.
 models = {'SVM', 'RandomForest', 'KNN'};
 acc = zeros(numel(models),1);
 sens = zeros(numel(models),1);

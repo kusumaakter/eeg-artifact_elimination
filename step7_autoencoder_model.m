@@ -14,6 +14,7 @@ inputFile = 'features_extracted.mat';
 [XTrain, YTrain, XVal, YVal, XTest, YTest] = helper_dl_functions('split_data', X, Y, 0.15, 0.20, 42);
 [XTrain, XVal, XTest] = helper_dl_functions('standardize', XTrain, XVal, XTest);
 
+% Use 50% compression with a minimum latent size of 16 units.
 hiddenSize = max(16, round(size(XTrain,2) * 0.5));
 
 autoenc = trainAutoencoder(XTrain', hiddenSize, ...
