@@ -166,7 +166,8 @@ function [XTrainN, XValN, XTestN, mu, sigma] = dl_standardize(XTrain, XVal, XTes
 mu = mean(XTrain, 1);
 sigma = std(XTrain, 0, 1);
 % Keep constant features numerically stable during normalization.
-sigma(sigma < eps) = 1;
+constantFeatureScale = 1;
+sigma(sigma < eps) = constantFeatureScale;
 
 XTrainN = (XTrain - mu) ./ sigma;
 XValN = (XVal - mu) ./ sigma;
